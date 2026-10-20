@@ -3,7 +3,7 @@
 name: Multi-Workflow Release
 on: 
   workflow_run:
-    workflows: [workflow_run-build]
+    workflows: [Multi-Workflow Build]
     types:
       - completed
 jobs:
