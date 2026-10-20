@@ -5,10 +5,15 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
+    env: 
+      artifact_dir: ./artifact
     steps:
+    - name: ensure artifact directory
+      shell: pwsh
+      run: new-item -ItemType Directory -Force -Path $env:artifact_dir
     - name: Make an artifact
       shell: pwsh
-      run:  Set-content -Path ./artifact/test.txt -Value "hi $(Get-Date)"
+      run:  Set-content -Path $env:artifact_dir/test.txt -Value "hi $(Get-Date)"
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v7.0.0
