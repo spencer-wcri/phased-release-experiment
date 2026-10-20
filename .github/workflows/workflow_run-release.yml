@@ -17,6 +17,7 @@ jobs:
       with:
         path: ./artifact
         run-id: ${{ github.event.workflow_run.id }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Show artifact
       shell: pwsh
       run: ls ./artifact && Get-content ./artifact/test.txt
