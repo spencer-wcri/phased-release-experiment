@@ -27,7 +27,6 @@ jobs:
         # branch: main
         ref: ${{ github.sha }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        check_artifacts: true
    
     - name: Show artifact
       shell: pwsh
