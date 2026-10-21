@@ -15,7 +15,7 @@ jobs:
         workflow: custom-download-build.yml
         workflow_conclusion: success
         ref: main
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
    
     - name: Show artifact
       shell: pwsh
