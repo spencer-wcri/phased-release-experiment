@@ -11,7 +11,7 @@ jobs:
       id: download-artifact
       uses: dawidd6/action-download-artifact@v27
       with:
-        path: ./artifact
+        path: .
         workflow: custom-download-build.yml
         workflow_conclusion: success
         ref: main
