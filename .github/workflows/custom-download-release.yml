@@ -6,7 +6,17 @@ on: workflow_dispatch
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
+    - name: Print github context so I can see what's available
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
+
+    - name: Print git sha info
+      run: echo "github.sha: ${{ github.sha }}" && echo "github.base_ref: ${{ github.base_ref }}"
+
     - name: Download artifact
       id: download-artifact
       uses: dawidd6/action-download-artifact@v27
@@ -14,7 +24,8 @@ jobs:
         path: .
         workflow: custom-download-build.yml
         workflow_conclusion: success
-        ref: main
+        # branch: main
+        ref: ${{ github.sha }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
         check_artifacts: true
    
