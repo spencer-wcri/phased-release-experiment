@@ -1,0 +1,28 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+name: dawidd6 Download - Build 
+on: 
+  push: 
+    branches: [main]
+  workflow_dispatch: {}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env: 
+      artifact_dir: ./artifact
+    steps:
+    - name: ensure artifact directory
+      shell: pwsh
+      run: new-item -ItemType Directory -Force -Path $env:artifact_dir
+    - name: Make an artifact
+      shell: pwsh
+      run:  Set-content -Path $env:artifact_dir/test.txt -Value "hi $(Get-Date)"
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v7.0.0
+      with:
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ./artifact
+
+    
+    

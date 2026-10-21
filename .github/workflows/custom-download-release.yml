@@ -1,0 +1,24 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+name: dawidd6 Download - Release
+on: workflow_dispatch 
+
+jobs:
+  release:
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v27
+      with:
+        path: ./artifact
+        workflow: custom-download-build.yml
+        workflow_conclusion: success
+        ref: main
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+   
+    - name: Show artifact
+      shell: pwsh
+      run: ls ./artifact && Get-content ./artifact/test.txt
+    
