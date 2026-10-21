@@ -21,10 +21,12 @@ jobs:
       id: download-artifact
       uses: dawidd6/action-download-artifact@v27
       with:
+        # Path behaves a bit differently than github's download artifact. 
+        # this action creates a directory with the name of the artifact instead of copying contents directly to the directory you specify
         path: .
         workflow: custom-download-build.yml
         workflow_conclusion: success
-        # branch: main
+        ## specifying ref as github.sha is necessary for the workflow to find a consistent artifact on rerun
         ref: ${{ github.sha }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
    
