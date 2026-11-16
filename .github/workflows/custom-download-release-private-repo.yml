@@ -1,0 +1,53 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+name: dawidd6 Download - Release - private repo compatible
+on:
+  workflow_dispatch:
+    inputs: 
+      commit: 
+        type: string
+        description: Commit you want to deploy. Defaults to latest commit (github.sha)
+        required: false
+  workflow_call:
+    inputs: 
+      commit: 
+        type: string
+        description: Commit that was built and should be deployed.
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions: 
+      actions: read
+      contents: read
+
+    environment: prod
+
+    steps:
+    - name: Print github context so I can see what's available
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
+
+    - name: Print git sha info
+      run: echo "github.sha -> ${{ github.sha }}" && echo "github.base_ref-> ${{ github.base_ref }}"
+
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v27
+      with:
+        # Path behaves a bit differently than github's download artifact. 
+        # this action creates a directory with the name of the artifact instead of copying contents directly to the directory you specify
+        path: .
+        workflow: custom-download-build-private-repo.yml
+        workflow_conclusion: success
+        ## specifying ref as github.sha is necessary for the workflow to find a consistent artifact on rerun
+        ref: ${{ github.sha }}
+        github_token: ${{ github.token }}
+   
+    - name: Show artifact
+      shell: pwsh
+      run: ls ./artifact && Get-content ./artifact/test.txt
+    
